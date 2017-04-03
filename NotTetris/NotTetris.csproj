@@ -42,6 +42,12 @@
       <HintPath>..\packages\Microsoft.Kinect.VisualGestureBuilder.2.0.1410.19000\lib\net45\Microsoft.Kinect.VisualGestureBuilder.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="SharpDX, Version=3.1.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.3.1.1\lib\net45\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.XInput, Version=3.1.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.XInput.3.1.1\lib\net45\SharpDX.XInput.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -99,7 +105,16 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Content Include="database\blockgame.gbd">
+    <Resource Include="Assets\minecraft_111413_1600.jpg" />
+    <Resource Include="Assets\bkg.jpg" />
+    <Resource Include="Assets\axe.jpg" />
+    <Resource Include="Assets\creeper.jpg" />
+    <Resource Include="Assets\dirt.jpg" />
+    <Resource Include="Assets\flower.jpg" />
+    <Resource Include="Assets\spider.jpg" />
+    <Resource Include="Assets\squid.jpg" />
+    <Resource Include="Assets\torch.jpg" />
+    <Content Include="database\NotTetris.gbd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />

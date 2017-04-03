@@ -11,12 +11,31 @@ namespace NotTetris
         private Point[] currShape;
         private Brush currColor;
         private bool rotate;
+        private string Name;
 
-        public Tetramino()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="i"> 
+        /// i is the shape to spawn
+        /// 0. I
+        /// 1. J
+        /// 2. L
+        /// 3. [ ]
+        /// 4. S
+        /// 5. T
+        /// 6. Z
+        /// </param>
+        public Tetramino(int i)
         {
             currPosition = new Point(0,0);
             currColor = Brushes.Transparent;
-            currShape = setRandomShape();
+            currShape = setShape(i);
+        }
+
+        public string getName()
+        {
+            return Name;
         }
 
         public Brush getCurrColor()
@@ -62,16 +81,16 @@ namespace NotTetris
             }
         }
 
-        private Point[] setRandomShape()
+        private Point[] setShape(int i)
         {
-            Random rand = new Random();
 
-            switch (rand.Next() % 7)
+            switch (i)
             {
                 
                 case 0: // I
                 rotate = true;
                 currColor = Brushes.Cyan;
+                    Name = "I";
                 return new Point[]
                     {
                         new Point(0,0), 
@@ -83,6 +102,7 @@ namespace NotTetris
                 case 1: //J
                 rotate = true;
                 currColor = Brushes.Blue;
+                    Name = "J";
                 return new Point[]
                     {
                         new Point(1,-1), 
@@ -94,7 +114,8 @@ namespace NotTetris
                 case 2: //L
                 rotate = true;
                 currColor = Brushes.Orange;
-                return new Point[]
+                    Name = "L";
+                    return new Point[]
                     {
                         new Point(0,0), 
                         new Point(-1,0), 
@@ -102,10 +123,11 @@ namespace NotTetris
                         new Point(0,-1) 
                     };
 
-                case 3: // o
+                case 3: // [ ]
                 rotate = false;
                 currColor = Brushes.Yellow;
-                return new Point[]
+                    Name = "[ ]";
+                    return new Point[]
                     {
                         new Point(0,0), 
                         new Point(0,1), 
@@ -116,7 +138,8 @@ namespace NotTetris
                 case 4: // S
                 rotate = true;
                 currColor = Brushes.Green;
-                return new Point[]
+                    Name = "S";
+                    return new Point[]
                     {
                         new Point(0,0), 
                         new Point(-1,0), 
@@ -126,8 +149,9 @@ namespace NotTetris
 
                 case 5: // T
                 rotate = true;
-                currColor = Brushes.Purple;
-                return new Point[]
+                    currColor = Brushes.Purple;
+                    Name = "T";
+                    return new Point[]
                     {
                         new Point(0,0), 
                         new Point(-1,0), 
@@ -138,7 +162,8 @@ namespace NotTetris
                 case 6: //z
                 rotate = true;
                 currColor = Brushes.Red;
-                return new Point[]
+                    Name = "Z";
+                    return new Point[]
                     {
                         new Point(0,0), 
                         new Point(-1,0), 

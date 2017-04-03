@@ -4,61 +4,25 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NotTetris"
-        Title="Gesture Test"
+        Title="Kinectris"
         Height="650" Width="950">
-    <Window.Resources>
-        <SolidColorBrush x:Key="MediumGreyBrush" Color="#ff6e6e6e" />
-        <SolidColorBrush x:Key="KinectPurpleBrush" Color="#ff52318f" />
-        <SolidColorBrush x:Key="KinectBlueBrush" Color="#ff00BCF2" />
+    <Window.Background>
+        <ImageBrush ImageSource="Assets/bkg.jpg"/>
+    </Window.Background>
 
-        <DataTemplate DataType="{x:Type local:GestureResultView}">
-            <Grid Width="Auto" Margin="5" Background="{Binding BodyColor}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <TextBlock HorizontalAlignment="Stretch" Text="{Binding BodyIndex, StringFormat='Body Index: {0}'}" FontSize="14" FontFamily="Segoe UI" FontWeight="SemiBold" Margin="5"/>
-                <Image Source="{Binding ImageSource}" Stretch="Uniform" Grid.Row="1" Margin="5"/>
-                <TextBlock Text="{Binding Detected, StringFormat='Detected: {0}'}" FontSize="18" FontFamily="Segoe UI" FontWeight="SemiBold" Grid.Row="2" Margin="5 5 0 0"/>
-                <TextBlock Text="{Binding Confidence, StringFormat='Confidence: {0}'}" FontSize="18" FontFamily="Segoe UI" FontWeight="SemiBold" Grid.Row="3" Margin="5 0 0 0"/>
-                <TextBlock Text="{Binding Name, StringFormat='Name: {0}'}" FontSize="18" FontFamily="Segoe UI" FontWeight="SemiBold" Grid.Row="4" Margin="5 0 0 0"/>
-            </Grid>
-        </DataTemplate>
-
-    </Window.Resources>
-
-    <Grid Margin="10 0 10 0">
-        <StackPanel DockPanel.Dock="Right" Width="172" Name="GameStatsPanel">
-            <TextBlock Padding="5" FontSize="20">Punktestand</TextBlock>
-            <Label Content="Label" Height="56" Name="Score" FontSize="28" FontWeight="Bold" />
-            <TextBlock Padding="5" Margin="0,20,0,0" FontSize="20">Zeilen</TextBlock>
-            <Label Content="Label" Height="56" Name="Lines" FontSize="28" FontWeight="Bold" />
+    <StackPanel Orientation="Horizontal" Margin="10 0 10 0">
+        <StackPanel Width="172" Name="GameStatsPanel" Grid.Row="0">
+            <TextBlock Padding="5" FontSize="20" Foreground="White">score</TextBlock>
+            <Label Content="Label" Height="56" Name="Score" FontSize="28" FontWeight="Bold" Foreground="White" />
+            <TextBlock Padding="5" Margin="0,20,0,0" FontSize="20" Foreground="White">Lines</TextBlock>
+            <Label Content="Label" Height="56" Name="Lines" FontSize="28" FontWeight="Bold" Foreground="White"/>
+            <TextBlock Padding="5" Margin="0,20,0,0" FontSize="20" Foreground="White">Next Up</TextBlock>
+            <Label Content="Label" Height="56" Name="Next_LBL" FontSize="16" FontWeight="Bold" Foreground="White"/>
+            <Button Content="start" Click="Start_BTN_Click" Foreground="White"/>
         </StackPanel>
-        <Grid x:Name="contentGrid" Grid.Row="1" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="2*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
 
-            <StackPanel Orientation="Vertical" Grid.Column="2" Grid.RowSpan="3" Margin="20 10 0 10" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Viewbox x:Name="kinectBodyViewbox">
-                    <Image Source="{Binding ImageSource}" Stretch="UniformToFill" />
-                </Viewbox>
-                <TextBlock Text="Gesture Detection Proof of Concept" TextWrapping="Wrap" Margin="5 10 5 5" FontFamily="Segoe UI" FontSize="14"/>
-            </StackPanel>
-
-            <Grid Height="500" Width="250" Name="MainGrid" Grid.Column="3">
+        <Grid x:Name="contentGrid" Grid.Row="1">
+            <Grid Height="auto" Width="250" Name="MainGrid" Margin="0,20">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
@@ -96,11 +60,16 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
             </Grid>
-
         </Grid>
 
-        <StatusBar Grid.Row="2" HorizontalAlignment="Stretch" Name="statusBar" VerticalAlignment="Bottom" Background="White" >
-            <StatusBarItem Content="{Binding StatusText}" />
-        </StatusBar>
-    </Grid>
+        <StackPanel Orientation="Vertical" Grid.Column="3" Grid.RowSpan="3" Margin="20 10 0 10" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Viewbox Width="100" Height="100" Visibility="Visible">
+                <Image Name="NextTetraminoImage"></Image>
+            </Viewbox>
+            <Viewbox x:Name="kinectBodyViewbox">
+                <Image Source="{Binding ImageSource}" Stretch="UniformToFill" />
+            </Viewbox>
+            <TextBlock Text="Gesture Detection Proof of Concept" TextWrapping="Wrap" Margin="5 10 5 5" FontFamily="Segoe UI" FontSize="14"/>
+        </StackPanel>
+    </StackPanel>
 </Window>

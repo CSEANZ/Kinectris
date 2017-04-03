@@ -11,7 +11,7 @@ namespace NotTetris
         //public RoutedEventHandler GestureRecognized { get; set; }
 
         //Path to the gesture database
-        private readonly string gestureDatabase = @"Database\blockgame.gbd";
+        private readonly string gestureDatabase = @"Database\NotTetris.gbd";
 
 
 

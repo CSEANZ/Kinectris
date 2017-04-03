@@ -16,6 +16,8 @@ using Microsoft.Kinect;
 using Microsoft.Kinect.Input;
 using System.ComponentModel;
 using System.Windows.Threading;
+using SharpDX.XInput;
+
 
 namespace NotTetris
 {
@@ -28,6 +30,20 @@ namespace NotTetris
         private DispatcherTimer Timer;
         private Board GameBoard;
         private Label GameOverLabel;
+
+        private Controller GP = new Controller(UserIndex.One);
+        private State stateNew;
+        private State stateOld;
+
+        /// <summary> init images </summary>
+        BitmapImage creeper = new BitmapImage(new Uri("pack://application:,,,/Assets/creeper.jpg"));       
+        BitmapImage torch = new BitmapImage(new Uri("pack://application:,,,/Assets/torch.jpg"));      
+        BitmapImage axe = new BitmapImage(new Uri("pack://application:,,,/Assets/axe.jpg"));      
+        BitmapImage dirt= new BitmapImage(new Uri("pack://application:,,,/Assets/dirt.jpg"));        
+        BitmapImage flower = new BitmapImage(new Uri("pack://application:,,,/Assets/flower.jpg"));       
+        BitmapImage spider = new BitmapImage(new Uri("pack://application:,,,/Assets/spider.jpg"));      
+        BitmapImage squid = new BitmapImage(new Uri("pack://application:,,,/Assets/squid.jpg"));
+
 
         /// <summary> Active Kinect sensor </summary>
         private KinectSensor kinectSensor = null;
@@ -114,7 +130,6 @@ namespace NotTetris
 
                 this.contentGrid.Children.Add(contentControl);
 
-                InitGame();
             }
         }
 
@@ -168,12 +183,54 @@ namespace NotTetris
             Timer.Start();
         }
 
+        private void Start_BTN_Click(object sender, RoutedEventArgs e)
+        {
+            InitGame();
+        }
+
         void GameTick(object sender, EventArgs e)
         {
+            stateNew = GP.GetState();
             Score.Content = GameBoard.getScore().ToString("000000000");
             Lines.Content = GameBoard.getLines().ToString("000000000");
             GameBoard.CurrTetraminoMovDown();
             CheckGameState();
+            foreach(var foo in gestureDetectorList)
+            {
+                if(foo.GestureResultView.Name != "" || foo.GestureResultView.Name == null)
+                {
+                    GameBoard.SpawnTetramino(foo.GestureResultView.Name);
+                }
+            }
+
+            Next_LBL.Content = GameBoard.NextTetraminoName();
+            
+            switch(GameBoard.NextTetraminoName())
+            {
+                case "I":
+                    NextTetraminoImage.Source = creeper;
+                    break;
+                case "J":
+                    NextTetraminoImage.Source = torch;
+                    break;
+                case "L":
+                    NextTetraminoImage.Source = axe;
+                    break;
+                case "[ ]":
+                    NextTetraminoImage.Source = dirt;
+                    break;
+                case "S":
+                    NextTetraminoImage.Source = flower;
+                    break;
+                case "T":
+                    NextTetraminoImage.Source = spider;
+                    break;
+                case "Z":
+                    NextTetraminoImage.Source = squid;
+                    break;
+            }
+
+            CheckButtons();
         }
 
         private void CheckGameState()
@@ -186,10 +243,41 @@ namespace NotTetris
             }
         }
 
+        private void CheckButtons()
+        {
+
+            //a  
+            if (stateOld.Gamepad.Buttons == GamepadButtonFlags.A && stateNew.Gamepad.Buttons == GamepadButtonFlags.A)
+            {
+                
+            }
+
+            //b 
+            if (stateOld.Gamepad.Buttons == GamepadButtonFlags.B && stateNew.Gamepad.Buttons == GamepadButtonFlags.B)
+            {
+                GameBoard.CurrTetraminoMovRotate();
+            }
+
+            //dpad left button
+            if (stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadLeft && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadLeft)
+            {
+                GameBoard.CurrTetraminoMovLeft();
+            }
+
+            //dpad right button
+            if (stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadRight && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadRight)
+            {
+                GameBoard.CurrTetraminoMovRight();
+            }
+            stateOld = stateNew;
+        }
+
+
         private void HandleKeyDown(object sender, KeyEventArgs e)
         {
             switch (e.Key)
             {
+
                 case Key.Left: if (Timer.IsEnabled) { GameBoard.CurrTetraminoMovLeft(); } break;
                 case Key.Right: if (Timer.IsEnabled) { GameBoard.CurrTetraminoMovRight(); } break;
                 case Key.Down: if (Timer.IsEnabled) { GameBoard.CurrTetraminoMovDown(); } break;

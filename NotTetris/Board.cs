@@ -12,11 +12,14 @@ namespace NotTetris
         private int Score;
         private int LinesFilled;
         private Tetramino currTetramino;
+        private Tetramino nextTetramino;
         private Label[,] BlockControls;
-        private bool gameOver = false; 
+        private bool gameOver = false;
 
-        static private Brush NoBrush = Brushes.Transparent;
-        static private Brush SilverBrush = Brushes.Gray; 
+        //static private Brush NoBrush = Brushes.Transparent;
+        static private Brush NoBrush = new SolidColorBrush(Colors.Black);
+        //static private Brush SilverBrush = Brushes.Gray; 
+        static private Brush SilverBrush = new SolidColorBrush(Colors.Black);
 
         public Board(Grid TetrisGrid)
         {
@@ -35,15 +38,101 @@ namespace NotTetris
                     BlockControls[i, j] = new Label();
                     BlockControls[i, j].Background = NoBrush;
                     BlockControls[i, j].BorderBrush = SilverBrush; 
-                    BlockControls[i,j].BorderThickness = new Thickness(1);
+                    BlockControls[i, j].BorderThickness = new Thickness(1);
                     Grid.SetRow(BlockControls[i, j], j);
                     Grid.SetColumn(BlockControls[i, j], i);
                     TetrisGrid.Children.Add(BlockControls[i, j]); 
                 }
             }
-            currTetramino = new Tetramino();
-            currTetraminoDraw(); 
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="i">
+        /// i is the shape to spawn
+        /// 0. I
+        /// 1. J
+        /// 2. L
+        /// 3.[ ]
+        /// 4. S
+        /// 5. T
+        /// 6. Z
+        /// </param>
+        public void SpawnTetramino(string Shape)
+        {
+            int i = 0;
+            if(Shape == "Random")
+            {
+                Random rnd = new Random();
+                i = rnd.Next(0, 6);
+            }
+            else
+            {
+                switch (Shape)
+                {
+                    case "Line":
+                        i = 0;
+                        break;
+                    case "J":
+                        i = 1;
+                        break;
+                    case "L":
+                        i = 2;
+                        break;
+                    case "Square":
+                        i = 3;
+                        break;
+                    case "S":
+                        i = 4;
+                        break;
+                    case "Tee":
+                        i = 5;
+                        break;
+                    case "Z":
+                        i = 6;
+                        break;
+                }
+            }
+            nextTetramino = new Tetramino(i);
+        }
+
+
+        public void LoadTeramino()
+        {
+            if(nextTetramino != null)
+            {
+                currTetramino = nextTetramino;
+                currTetraminoDraw();
+                nextTetramino = null;
+            }
+            else
+            {
+                SpawnTetramino("Random");
+                currTetramino = nextTetramino;
+                nextTetramino = null;
+            }
+        }
+
+
+        public string NextTetraminoName()
+        {
+            if (nextTetramino == null)
+            {
+                return "no next tetramino";
+            }
+            else
+            {
+                if (nextTetramino.getName() != null)
+                {
+                    return nextTetramino.getName();
+                }
+                else
+                {
+                    return "Null";
+                }
+            }
+        }
+
 
         public int getScore()
         {
@@ -185,6 +274,10 @@ namespace NotTetris
 
         public void CurrTetraminoMovDown()
         {
+            if(currTetramino == null)
+            {
+                LoadTeramino();
+            }
             Point Position = currTetramino.getCurrPosition();
             Point[] Shape = currTetramino.getCurrShape();
             bool move = true; 
@@ -223,7 +316,7 @@ namespace NotTetris
 
                 else
                 {
-                    currTetramino = new Tetramino();
+                    LoadTeramino();
                 }
                 
             }
