@@ -4,6 +4,7 @@ using System.Windows.Media;
 
 namespace NotTetris
 {
+    //Tetramino
     public class Tetramino
     {
 
